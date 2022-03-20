@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.infernalstudios.config.element.handler.IConfigElementHandler;
+
 /**
  * Specifies that this field is now configurable by the config system
  */
@@ -27,10 +29,30 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Configurable {
 
+    /**
+     * The translation key of this field. If this is not specified, the field name is used.
+     */
     String translationKey() default "";
 
+    /**
+     * The description of this field.
+     */
     String description() default "";
-
+    
+    /**
+     * The category this field is in. If this is not specified, the field name is used.
+     */
     String category() default "";
 
+    /**
+     * Any custom tags to the field for any custom functionality.
+     */
+    String[] tags() default {};
+
+    /**
+     * A custom handler for this field. If this is not specified, the default handler is used.
+     * The class must have a public static INSTANCE field.
+     */
+    @SuppressWarnings("rawtypes")
+    Class handler() default IConfigElementHandler.class;
 }

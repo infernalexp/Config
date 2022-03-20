@@ -17,11 +17,9 @@ package org.infernalstudios.config.element.handler;
 
 import java.lang.reflect.Field;
 
-import org.infernalstudios.config.annotation.Configurable;
 import org.infernalstudios.config.annotation.FloatRange;
 import org.infernalstudios.config.element.IConfigElement;
 import org.infernalstudios.config.element.NumberConfigElement;
-import org.infernalstudios.config.util.Util;
 import org.infernalstudios.config.util.annotation.Nullable;
 
 public final class FloatElementHandler implements IConfigElementHandler<Float, Number> {
@@ -37,16 +35,7 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
             min = range.min();
             max = range.max();
         }
-        IConfigElement<Float> element = new NumberConfigElement<Float>(field, min, max, this);
-        Configurable configurable = field.getAnnotation(Configurable.class);
-        String description = configurable.description();
-        String translationKey = configurable.translationKey();
-        if (!description.isEmpty()) {
-            element.setComment(description);
-        }
-        element.setTranslationKey(translationKey.isEmpty() ? field.getName() : translationKey);
-        element.setCategory(Util.getCategory(field));
-        return element;
+        return new NumberConfigElement<>(field, min, max, this);
     }
 
     @Override

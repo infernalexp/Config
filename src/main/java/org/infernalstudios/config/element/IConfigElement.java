@@ -42,21 +42,10 @@ public interface IConfigElement<T> {
     String getCategory();
 
     /**
-     * Sets the category this element is in.
-     */
-    void setCategory(String category);
-
-    /**
      * Returns the translation key of this element.
-     * It's possible to set this to null, but should be set upon element creation using {@link IConfigElement#setTranslationKey()}.
      */
-    @Nullable
     String getTranslationKey();
-    /**
-     * Sets the translation key of this element.
-     */
-    void setTranslationKey(String translationKey);
-
+    
     /**
      * Returns the cached value of this element. If the cached value is not set, will return null, and users should always check for null.
      */
@@ -66,6 +55,7 @@ public interface IConfigElement<T> {
     /**
      * Returns the field value of this element. This may be null.
      */
+    @Nullable
     T getFromField();
 
     /**
@@ -84,10 +74,11 @@ public interface IConfigElement<T> {
      */
     @Nullable
     String getComment();
+
     /**
-     * Sets a comment regarding this element. If the given value is null, the comment will be cleared.
+     * Checks if the given tag is present on the element.
      */
-    void setComment(@Nullable String comment);
+    boolean hasTag(String tag);
 
     /**
      * Returns the field this element is associated with.

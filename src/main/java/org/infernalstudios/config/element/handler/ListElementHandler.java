@@ -18,10 +18,8 @@ package org.infernalstudios.config.element.handler;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.infernalstudios.config.annotation.Configurable;
 import org.infernalstudios.config.element.ConfigElement;
 import org.infernalstudios.config.element.IConfigElement;
-import org.infernalstudios.config.util.Util;
 import org.infernalstudios.config.util.annotation.Nullable;
 
 @SuppressWarnings("rawtypes")
@@ -31,16 +29,7 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
 
     @Override
     public IConfigElement<List> create(Field field) {
-        IConfigElement<List> element = new ConfigElement<List>(field, this);
-        Configurable configurable = field.getAnnotation(Configurable.class);
-        String description = configurable.description();
-        String translationKey = configurable.translationKey();
-        if (!description.isEmpty()) {
-            element.setComment(description);
-        }
-        element.setTranslationKey(translationKey.isEmpty() ? field.getName() : translationKey);
-        element.setCategory(Util.getCategory(field));
-        return element;
+        return new ConfigElement<>(field, this);
     }
 
     @Override

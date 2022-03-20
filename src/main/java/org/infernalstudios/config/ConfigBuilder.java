@@ -64,11 +64,30 @@ public final class ConfigBuilder {
             }
             this.loadedElementNames.add(category);
             
-            Class<?> fieldType = field.getType();
-            IConfigElementHandler<?, ?> handler = Config.getHandler(fieldType);
+            Configurable configurable = field.getAnnotation(Configurable.class);
+            IConfigElementHandler<?, ?> handler = null;
+            if (!configurable.handler().equals(IConfigElementHandler.class)) {
+                try {
+                    Field INSTANCE = configurable.handler().getField("INSTANCE");
+                    Class<?> clazz = INSTANCE.getType();
+                    Object h = INSTANCE.get(null);
+                    if (IConfigElementHandler.class.isInstance(h)) {
+                        handler = (IConfigElementHandler<?, ?>) h;
+                    } else {
+                        throw new IllegalStateException(clazz.toString());
+                    }
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    // Fail silently
+                }
+            }
             if (handler == null) {
-                throw new IllegalStateException(String.format("No handler of type \"%s\"\n\tat: %s",
-                field.toGenericString(), fieldType.getName()));
+                Class<?> fieldType = field.getType();
+                handler = Config.getHandler(fieldType);
+                if (handler == null) {
+                    throw new IllegalStateException(String.format("No handler of type \"%s\"\n\tat: %s",
+                    field.toGenericString(), fieldType.getName()));
+                }
             }
             
             this.elements.add(Pair.of(field, handler));

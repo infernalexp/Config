@@ -2,7 +2,6 @@ package org.infernalstudios.config.element.handler;
 
 import java.lang.reflect.Field;
 
-import org.infernalstudios.config.annotation.Configurable;
 import org.infernalstudios.config.element.IConfigElement;
 import org.infernalstudios.config.element.NumberConfigElement;
 import org.infernalstudios.config.util.Util;
@@ -15,16 +14,7 @@ public class NumberElementHandler implements IConfigElementHandler<Number, Numbe
 
     @Override
     public IConfigElement<Number> create(Field field) {
-        IConfigElement<Number> element = new NumberConfigElement<Number>(field, Double.MIN_VALUE, Double.MAX_VALUE, this);
-        Configurable configurable = field.getAnnotation(Configurable.class);
-        String description = configurable.description();
-        String translationKey = configurable.translationKey();
-        if (!description.isEmpty()) {
-            element.setComment(description);
-        }
-        element.setTranslationKey(translationKey.isEmpty() ? field.getName() : translationKey);
-        element.setCategory(Util.getCategory(field));
-        return element;
+        return new NumberConfigElement<>(field, Double.MIN_VALUE, Double.MAX_VALUE, this);
     }
 
     @Override

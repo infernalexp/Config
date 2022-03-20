@@ -16,9 +16,10 @@
 package org.infernalstudios.config.element;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
+import org.infernalstudios.config.annotation.Configurable;
 import org.infernalstudios.config.element.handler.IConfigElementHandler;
+import org.infernalstudios.config.util.Util;
 import org.infernalstudios.config.util.annotation.Nullable;
 
 public class ConfigElement<T> implements IConfigElement<T> {
@@ -28,15 +29,23 @@ public class ConfigElement<T> implements IConfigElement<T> {
     private String translationKey;
     private String comment;
     private T value;
-    private String category = "";
+    private final String category;
+    private String[] tags;
 
     @SuppressWarnings("unchecked")
     public ConfigElement(Field field, IConfigElementHandler<T, ?> handler) {
+        Configurable configurable = field.getAnnotation(Configurable.class);
+        String description = configurable.description();
+        String translationKey = configurable.translationKey();
         this.field = field;
         this.handler = handler;
-        this.translationKey = null;
         this.value = null;
-        this.comment = null;
+        this.comment = "";
+        if (!description.isEmpty()) {
+            this.comment = description;
+        }
+        this.translationKey = translationKey.isEmpty() ? field.getName() : translationKey;
+        this.category = Util.getCategory(field);
 
         try {
             this.defaultValue = (T) this.field.get(field.getDeclaringClass());
@@ -61,12 +70,6 @@ public class ConfigElement<T> implements IConfigElement<T> {
     @Nullable
     public String getTranslationKey() {
         return this.translationKey;
-    }
-
-    @Override
-    public void setTranslationKey(@Nullable String translationKey) {
-        Objects.requireNonNull(translationKey, "translationKey mustn't be null");
-        this.translationKey = translationKey;
     }
 
     @Override
@@ -124,8 +127,13 @@ public class ConfigElement<T> implements IConfigElement<T> {
     }
 
     @Override
-    public void setComment(@Nullable String comment) {
-        this.comment = comment;
+    public boolean hasTag(String tag) {
+        for (int i = 0; i < this.tags.length; i++) {
+            if (this.tags[i].equals(tag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -142,11 +150,5 @@ public class ConfigElement<T> implements IConfigElement<T> {
     @Override
     public String getCategory() {
         return this.category;
-    }
-
-
-    @Override
-    public void setCategory(String category) {
-        this.category = category;
     }
 }
