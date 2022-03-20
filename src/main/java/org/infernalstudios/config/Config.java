@@ -18,6 +18,7 @@ package org.infernalstudios.config;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,7 +104,7 @@ public final class Config {
      * @throws IOException
      */
     public static ConfigBuilder builder(String path) throws IOException {
-        return Config.builder(Path.of(path));
+        return Config.builder(Paths.get(path));
     }
 
     /**

@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.electronwill.night-config:core:3.6.4'
-    implementation 'com.electronwill.night-config:toml:3.6.4'
+    implementation group: 'com.electronwill.night-config', name: 'core', version: '3.6.4'
+    implementation group: 'com.electronwill.night-config', name: 'toml', version: '3.6.4'
 }
 
 java {
@@ -26,10 +26,10 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = config.GROUP
             artifactId = config.ARTIFACT
-            artifact jar
+            from components.java
 
             pom {
-                name = 'Mining Master'
+                name = 'Config'
                 url = 'https://infernalstudios.org/config-lib'
                 licenses {
                     license {
