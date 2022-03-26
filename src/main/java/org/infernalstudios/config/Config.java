@@ -107,20 +107,34 @@ public final class Config {
                 shouldSave = true;
             }
         }
-        for (Consumer<ReloadStage> listener : this.reloadListeners) {
-            listener.accept(ReloadStage.SAVE);
-        }
         if (shouldSave) {
+            for (Consumer<ReloadStage> listener : this.reloadListeners) {
+                listener.accept(ReloadStage.SAVE);
+            }
             this.save();
         }
-        this.config.save();
         for (Consumer<ReloadStage> listener : this.reloadListeners) {
             listener.accept(ReloadStage.POST);
         }
     }
 
     public static enum ReloadStage {
-        PRE, SAVE, POST
+        /**
+         * Emitted when {@link Config#reload() reload()} is called.
+         */
+        PRE,
+
+        /**
+         * Emitted before {@link Config#save() save()} is called in {@link Config#reload() reload()}.
+         * <p>
+         * This is not always emitted.
+         */
+        SAVE,
+
+        /**
+         * Emitted when {@link Config#reload() reload()} has finished everything.
+         */
+        POST
     }
 
     public void onReload(Consumer<ReloadStage> runnable) {

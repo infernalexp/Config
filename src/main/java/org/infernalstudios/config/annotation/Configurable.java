@@ -48,9 +48,11 @@ public @interface Configurable {
     String[] tags() default {};
 
     /**
-     * <p>A custom handler for this field. If this is not specified, the default handler is used.</p>
-     * <p>The string must be a path to a public static field holding an IConfigElementHandler value.</p>
-     * <p>Must be in the format of {@code package.name.ClassName.fieldName}.</p>
+     * A custom handler for this field. If this is not specified, the default handler is used.
+     * <p>
+     * The string must be a path to a public static field holding an IConfigElementHandler value.
+     * <p>
+     * Must be in the format of {@code package.name.ClassName.fieldName}.
      */
     String handler() default "";
 }
