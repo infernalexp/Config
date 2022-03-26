@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +40,7 @@ import org.infernalstudios.config.element.handler.StringElementHandler;
 
 public final class Config {
     private final CommentedFileConfig config;
-    public final List<IConfigElement<?>> elements;
+    private final List<IConfigElement<?>> elements;
 
     protected Config(CommentedFileConfig config, List<IConfigElement<?>> elements) {
         this.config = config;
@@ -62,6 +63,14 @@ public final class Config {
             System.err.println(String.format("Couldn't watch file \"%s\" for changes.",
                     config.getNioPath().toAbsolutePath().toString()));
         }
+    }
+
+    public CommentedFileConfig getConfig() {
+        return config;
+    }
+
+    public Iterator<IConfigElement<?>> getElements() {
+        return elements.iterator();
     }
 
     /**

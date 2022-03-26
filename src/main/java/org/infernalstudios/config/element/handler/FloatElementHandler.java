@@ -17,7 +17,9 @@ package org.infernalstudios.config.element.handler;
 
 import java.lang.reflect.Field;
 
+import org.infernalstudios.config.annotation.DoubleRange;
 import org.infernalstudios.config.annotation.FloatRange;
+import org.infernalstudios.config.annotation.IntegerRange;
 import org.infernalstudios.config.element.IConfigElement;
 import org.infernalstudios.config.element.NumberConfigElement;
 import org.infernalstudios.config.util.annotation.Nullable;
@@ -28,12 +30,22 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
 
     @Override
     public IConfigElement<Float> create(Field field) {
-        FloatRange range = field.getAnnotation(FloatRange.class);
+        DoubleRange rangeD = field.getAnnotation(DoubleRange.class);
+        FloatRange rangeF = field.getAnnotation(FloatRange.class);
+        IntegerRange rangeI = field.getAnnotation(IntegerRange.class);
+        if (rangeD != null) {
+            System.err.println(String.format("WARNING: %s has a %s annotation, but is a float.", 
+                    field.toGenericString(), DoubleRange.class.getSimpleName()));
+        }
+        if (rangeI != null) {
+            System.err.println(String.format("WARNING: %s has an %s annotation, but is a float.", 
+                    field.toGenericString(), IntegerRange.class.getSimpleName()));
+        }
         float min = Float.MIN_VALUE;
         float max = Float.MAX_VALUE;
-        if (range != null) {
-            min = range.min();
-            max = range.max();
+        if (rangeF != null) {
+            min = rangeF.min();
+            max = rangeF.max();
         }
         return new NumberConfigElement<>(field, min, max, this);
     }

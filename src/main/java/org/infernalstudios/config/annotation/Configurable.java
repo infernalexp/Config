@@ -20,12 +20,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.infernalstudios.config.element.handler.IConfigElementHandler;
-
 /**
- * Specifies that this field is now configurable by the config system
+ * Specifies that this field is now configurable by the config system.
  */
-@Target({ ElementType.FIELD, ElementType.TYPE})
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Configurable {
 
@@ -50,9 +48,9 @@ public @interface Configurable {
     String[] tags() default {};
 
     /**
-     * A custom handler for this field. If this is not specified, the default handler is used.
-     * The class must have a public static INSTANCE field.
+     * <p>A custom handler for this field. If this is not specified, the default handler is used.</p>
+     * <p>The string must be a path to a public static field holding an IConfigElementHandler value.</p>
+     * <p>Must be in the format of {@code package.name.ClassName.fieldName}.</p>
      */
-    @SuppressWarnings("rawtypes")
-    Class handler() default IConfigElementHandler.class;
+    String handler() default "";
 }

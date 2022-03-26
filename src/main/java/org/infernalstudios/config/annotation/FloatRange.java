@@ -21,7 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies the bounds for a configurable field. The bound is inclusive.
+ * Specifies the bounds for a
+ * {@link org.infernalstudios.config.annotation.Configurable @Configurable}
+ * field. The bound is inclusive.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

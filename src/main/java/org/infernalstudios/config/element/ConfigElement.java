@@ -119,7 +119,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
     @Override
     public String getComment() {
         StringBuilder s = new StringBuilder();
-        if (this.comment != null) {
+        if (this.comment != null && !this.comment.isEmpty()) {
             s.append(' ').append(this.comment).append('\n');
         }
         s.append(' ').append("Default: ").append(this.defaultValue.toString());
@@ -150,5 +150,14 @@ public class ConfigElement<T> implements IConfigElement<T> {
     @Override
     public String getCategory() {
         return this.category;
+    }
+
+    @Override
+    public String toString() {
+        String typeName = this.getType().toGenericString();
+        typeName = typeName.substring(typeName.lastIndexOf(' ') + 1);
+        String name = this.getName();
+        String value = this.get().toString();
+        return String.format("%s: %s = %s", typeName, name, value);
     }
 }

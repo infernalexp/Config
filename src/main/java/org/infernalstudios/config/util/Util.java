@@ -3,6 +3,7 @@ package org.infernalstudios.config.util;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import org.infernalstudios.config.annotation.Category;
 import org.infernalstudios.config.annotation.Configurable;
 import org.infernalstudios.config.util.annotation.Nullable;
 
@@ -70,10 +71,10 @@ public final class Util {
 
     public static String getCategory(Class<?> clazz) {
         Objects.requireNonNull(clazz, "clazz must not be null");
-        Configurable configurable = clazz.getAnnotation(Configurable.class);
+        Category configurable = clazz.getAnnotation(Category.class);
         String category;
         if (configurable != null) {
-            category = configurable.category();
+            category = configurable.value();
         } else {
             category = "";
         }

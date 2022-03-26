@@ -66,15 +66,25 @@ public final class ConfigBuilder {
             
             Configurable configurable = field.getAnnotation(Configurable.class);
             IConfigElementHandler<?, ?> handler = null;
-            if (!configurable.handler().equals(IConfigElementHandler.class)) {
+            if (!configurable.handler().equals("")) {
                 try {
-                    Field INSTANCE = configurable.handler().getField("INSTANCE");
+                    String fieldPath = configurable.handler();
+                    String classPath = fieldPath.substring(0, fieldPath.lastIndexOf('.'));
+                    String fieldName = fieldPath.substring(fieldPath.lastIndexOf('.') + 1);
+                    Field INSTANCE = Class.forName(classPath).getDeclaredField(fieldName);
                     Class<?> clazz = INSTANCE.getType();
                     Object h = INSTANCE.get(null);
                     if (IConfigElementHandler.class.isInstance(h)) {
                         handler = (IConfigElementHandler<?, ?>) h;
                     } else {
-                        throw new IllegalStateException(clazz.toString());
+                        throw new IllegalStateException(
+                                String.format("%s is not an instance of %s\n\tat: %s", clazz.toGenericString(),
+                                        IConfigElementHandler.class.toGenericString(), field.toGenericString()));
+                    }
+                    if (!handler.canHandle(field.getType())) {
+                        throw new IllegalStateException(
+                                String.format("%s cannot handle %s\n\tat: %s", handler.getClass().toGenericString(),
+                                        field.getType().toGenericString(), field.toGenericString()));
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -85,8 +95,8 @@ public final class ConfigBuilder {
                 Class<?> fieldType = field.getType();
                 handler = Config.getHandler(fieldType);
                 if (handler == null) {
-                    throw new IllegalStateException(String.format("No handler of type \"%s\"\n\tat: %s",
-                    field.toGenericString(), fieldType.getName()));
+                    throw new IllegalStateException(String.format("No handler of type %s\n\tat: %s",
+                            fieldType.getName(), field.toGenericString()));
                 }
             }
             

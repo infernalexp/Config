@@ -18,6 +18,8 @@ package org.infernalstudios.config.element.handler;
 import java.lang.reflect.Field;
 
 import org.infernalstudios.config.annotation.DoubleRange;
+import org.infernalstudios.config.annotation.FloatRange;
+import org.infernalstudios.config.annotation.IntegerRange;
 import org.infernalstudios.config.element.IConfigElement;
 import org.infernalstudios.config.element.NumberConfigElement;
 import org.infernalstudios.config.util.annotation.Nullable;
@@ -28,12 +30,22 @@ public final class DoubleElementHandler implements IConfigElementHandler<Double,
 
     @Override
     public IConfigElement<Double> create(Field field) {
-        DoubleRange range = field.getAnnotation(DoubleRange.class);
+        DoubleRange rangeD = field.getAnnotation(DoubleRange.class);
+        FloatRange rangeF = field.getAnnotation(FloatRange.class);
+        IntegerRange rangeI = field.getAnnotation(IntegerRange.class);
+        if (rangeF != null) {
+            System.err.println(String.format("WARNING: %s has a %s annotation, but is a double.",
+                    field.toGenericString(), FloatRange.class.getSimpleName()));
+        }
+        if (rangeI != null) {
+            System.err.println(String.format("WARNING: %s has an %s annotation, but is a double.",
+                    field.toGenericString(), IntegerRange.class.getSimpleName()));
+        }
         double min = Double.MIN_VALUE;
         double max = Double.MAX_VALUE;
-        if (range != null) {
-            min = range.min();
-            max = range.max();
+        if (rangeD != null) {
+            min = rangeD.min();
+            max = rangeD.max();
         }
         return new NumberConfigElement<>(field, min, max, this);
     }
