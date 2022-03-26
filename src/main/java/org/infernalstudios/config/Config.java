@@ -101,7 +101,7 @@ public final class Config {
             Object obj = this.config.get(element.getName());
             IConfigElementHandler<Object, Object> handler = (IConfigElementHandler<Object, Object>) element.getTypeHandler();
             if (obj != null && handler.canHandle(obj.getClass())) {
-                handler.update(((IConfigElement<Object>) element), obj);
+                handler.update(((IConfigElement<Object>) element), handler.deserialize(obj));
             } else {
                 this.config.set(element.getName(), handler.serialize((IConfigElement<Object>) element));
                 shouldSave = true;

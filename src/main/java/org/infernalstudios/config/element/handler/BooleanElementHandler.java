@@ -32,9 +32,9 @@ public final class BooleanElementHandler implements IConfigElementHandler<Boolea
     }
 
     @Override
-    public IConfigElement<Boolean> update(IConfigElement<Boolean> element, @Nullable Boolean obj) {
-        if (obj != null) {
-            element.set(obj.booleanValue());
+    public IConfigElement<Boolean> update(IConfigElement<Boolean> element, @Nullable Boolean bool) {
+        if (bool != null) {
+            element.set(bool.booleanValue());
         }
         return element;
     }
@@ -43,6 +43,11 @@ public final class BooleanElementHandler implements IConfigElementHandler<Boolea
     public Boolean serialize(IConfigElement<Boolean> element) {
         Boolean value = element.getFromField();
         return value == null ? element.getDefault() : value;
+    }
+
+    @Override
+    public Boolean deserialize(Boolean obj) {
+        return obj;
     }
 
     @Override

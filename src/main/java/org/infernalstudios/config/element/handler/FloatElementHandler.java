@@ -51,9 +51,9 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
     }
 
     @Override
-    public IConfigElement<Float> update(IConfigElement<Float> element, @Nullable Number obj) {
-        if (obj != null) {
-            element.set(obj.floatValue());
+    public IConfigElement<Float> update(IConfigElement<Float> element, @Nullable Float value) {
+        if (value != null) {
+            element.set(value.floatValue());
         }
         return element;
     }
@@ -62,6 +62,11 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
     public Number serialize(IConfigElement<Float> element) {
         Float value = element.getFromField();
         return value == null ? element.getDefault() : value;
+    }
+
+    @Override
+    public Float deserialize(Number obj) {
+        return obj.floatValue();
     }
 
     @Override

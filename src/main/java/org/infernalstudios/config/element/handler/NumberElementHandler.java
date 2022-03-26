@@ -30,6 +30,12 @@ public class NumberElementHandler implements IConfigElementHandler<Number, Numbe
         Number value = element.getFromField();
         return value == null ? element.getDefault() : value;
     }
+
+    @Override
+    public Number deserialize(Number obj) {
+        return obj;
+    }
+
     @Override
     public boolean canHandle(Class<?> clazz) {
         return Util.isNumber(clazz);

@@ -51,9 +51,9 @@ public final class IntegerElementHandler implements IConfigElementHandler<Intege
     }
 
     @Override
-    public IConfigElement<Integer> update(IConfigElement<Integer> element, @Nullable Number obj) {
-        if (obj != null) {
-            element.set(obj.intValue());
+    public IConfigElement<Integer> update(IConfigElement<Integer> element, @Nullable Integer value) {
+        if (value != null) {
+            element.set(value.intValue());
         }
         return element;
     }
@@ -62,6 +62,11 @@ public final class IntegerElementHandler implements IConfigElementHandler<Intege
     public Number serialize(IConfigElement<Integer> element) {
         Integer value = element.getFromField();
         return value == null ? element.getDefault() : value;
+    }
+
+    @Override
+    public Integer deserialize(Number obj) {
+        return obj.intValue();
     }
 
     @Override

@@ -45,6 +45,11 @@ public final class StringElementHandler implements IConfigElementHandler<String,
     }
 
     @Override
+    public String deserialize(String obj) {
+        return obj;
+    }
+
+    @Override
     public boolean canHandle(Class<?> clazz) {
         return clazz.equals(String.class) || clazz.isAssignableFrom(String.class);
     }

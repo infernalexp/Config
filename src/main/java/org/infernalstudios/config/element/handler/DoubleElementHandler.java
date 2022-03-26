@@ -51,9 +51,9 @@ public final class DoubleElementHandler implements IConfigElementHandler<Double,
     }
 
     @Override
-    public IConfigElement<Double> update(IConfigElement<Double> element, @Nullable Number obj) {
-        if (obj != null) {
-            element.set(obj.doubleValue());
+    public IConfigElement<Double> update(IConfigElement<Double> element, @Nullable Double value) {
+        if (value != null) {
+            element.set(value.doubleValue());
         }
         return element;
     }
@@ -62,6 +62,11 @@ public final class DoubleElementHandler implements IConfigElementHandler<Double,
     public Number serialize(IConfigElement<Double> element) {
         Double value = element.getFromField();
         return value == null ? element.getDefault() : value;
+    }
+
+    @Override
+    public Double deserialize(Number obj) {
+        return obj.doubleValue();
     }
 
     @Override

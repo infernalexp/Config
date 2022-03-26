@@ -47,6 +47,11 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
     }
 
     @Override
+    public List deserialize(List obj) {
+        return obj;
+    }
+
+    @Override
     public boolean canHandle(Class<?> clazz) {
         return (clazz.equals(List.class) || clazz.isAssignableFrom(List.class));
     }

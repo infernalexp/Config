@@ -28,17 +28,24 @@ public interface IConfigElementHandler<T, S> {
     IConfigElement<T> create(Field field);
 
     /**
-     * Updates `element` with a new TOML-serialized value `obj`.
+     * Updates {@code element} with a new value {@code obj}.
      * @param element The element to update.
-     * @param obj The TOML-serialized value to use as the new value. Can be null.
+     * @param obj The new value deserialized from {@link IConfigElementHandler#deserialize(S) deserialize}. Can be null.
      */
-    IConfigElement<T> update(IConfigElement<T> element, @Nullable S obj);
+    IConfigElement<T> update(IConfigElement<T> element, @Nullable T obj);
 
     /**
-     * Serializes `element` to a TOML-serializable value.
+     * Serializes {@code element} to a TOML-serializable value.
      * @param element The element to serialize.
      */
     S serialize(IConfigElement<T> element);
+
+    /**
+     * Deserializes {@code obj} from a TOML-serializable value to the handler type.
+     * @param obj The value to deserialize.
+     */
+    @Nullable
+    T deserialize(S obj);
 
     /**
      * Determines whether the provided type can be handled by this handler.
