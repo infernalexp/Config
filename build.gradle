@@ -26,6 +26,21 @@ javadoc {
     options.addStringOption('Xdoclint:none', '-quiet')
 }
 
+jar {
+    manifest {
+        attributes([
+            "Specification-Title":      config.ARTIFACT,
+            "Specification-Vendor":     "infernalstudios",
+            "Specification-Version":    "3",
+            "Implementation-Title":     config.ARTIFACT,
+            "Implementation-Version":   config.VERISON,
+            "Implementation-Vendor":    "infernalstudios",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "FMLModType":               "GAMELIBRARY"
+        ])
+    }
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
