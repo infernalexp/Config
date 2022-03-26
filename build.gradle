@@ -6,7 +6,7 @@ ext.config = parseConfig(file('build.properties'))
 version = config.VERSION
 group = "${config.GROUP}.${config.ARTIFACT}"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 repositories {
     mavenCentral()
@@ -19,6 +19,7 @@ dependencies {
 
 java {
     withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
@@ -46,8 +47,7 @@ publishing {
     }
     repositories {
         maven {
-            url 'https://maven.infernalstudios.org/releases'
-
+            url = version.endsWith('SNAPSHOT') ? 'https://maven.infernalstudios.org/snapshots' : 'https://maven.infernalstudios.org/releases' 
             
             credentials {
                 username = System.getenv('MAVEN_USER')

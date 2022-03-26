@@ -110,7 +110,7 @@ public final class Config {
 
     /**
      * Creates a config builder.
-     * @throws IOException
+     * @throws IOException If the provided path exists, and is invalid.
      */
     public static ConfigBuilder builder(String path) throws IOException {
         return Config.builder(Paths.get(path));
@@ -118,7 +118,7 @@ public final class Config {
 
     /**
      * Creates a config builder.
-     * @throws IOException
+     * @throws IOException If the provided file exists, and is invalid.
      */
     public static ConfigBuilder builder(File file) throws IOException {
         return Config.builder(file.toPath());
@@ -126,7 +126,7 @@ public final class Config {
 
     /**
      * Creates a config builder.
-     * @throws IOException
+     * @throws IOException If the provided path exists, and is invalid.
      */
     public static ConfigBuilder builder(Path path) throws IOException {
         return new ConfigBuilder(path);

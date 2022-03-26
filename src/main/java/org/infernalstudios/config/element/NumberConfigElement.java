@@ -75,7 +75,7 @@ public class NumberConfigElement<T extends Number> extends PrimitiveConfigElemen
         if (value == null) {
             return true;
         } else {
-            return value instanceof Number && this.isValid((Number) value);
+            return value instanceof Number number && this.isValid(number);
         }
     }
 
