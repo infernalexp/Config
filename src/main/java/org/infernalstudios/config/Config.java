@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.file.FileWatcher;
@@ -41,6 +42,7 @@ import org.infernalstudios.config.element.handler.StringElementHandler;
 public final class Config {
     private final CommentedFileConfig config;
     private final List<IConfigElement<?>> elements;
+    private final List<Consumer<ReloadStage>> reloadListeners = new CopyOnWriteArrayList<>();
 
     protected Config(CommentedFileConfig config, List<IConfigElement<?>> elements) {
         this.config = config;
@@ -90,6 +92,9 @@ public final class Config {
      */
     @SuppressWarnings("unchecked")
     public void reload() {
+        for (Consumer<ReloadStage> listener : this.reloadListeners) {
+            listener.accept(ReloadStage.PRE);
+        }
         this.config.load();
         boolean shouldSave = false;
         for (IConfigElement<?> element : this.elements) {
@@ -102,10 +107,24 @@ public final class Config {
                 shouldSave = true;
             }
         }
+        for (Consumer<ReloadStage> listener : this.reloadListeners) {
+            listener.accept(ReloadStage.SAVE);
+        }
         if (shouldSave) {
             this.save();
         }
         this.config.save();
+        for (Consumer<ReloadStage> listener : this.reloadListeners) {
+            listener.accept(ReloadStage.POST);
+        }
+    }
+
+    public static enum ReloadStage {
+        PRE, SAVE, POST
+    }
+
+    public void onReload(Consumer<ReloadStage> runnable) {
+        this.reloadListeners.add(runnable);
     }
 
     /**

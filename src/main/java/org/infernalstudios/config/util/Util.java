@@ -64,7 +64,10 @@ public final class Util {
         if ("".equals(category)) {
             category = getCategory(field.getDeclaringClass());
         } else {
-            category = getCategory(field.getDeclaringClass()) + "." + category;
+            String superCategory = getCategory(field.getDeclaringClass());
+            if (!"".equals(superCategory)) {
+                category = superCategory + "." + category;
+            }
         }
         return category;
     }
@@ -83,7 +86,10 @@ public final class Util {
             if ("".equals(category)) {
                 category = getCategory(clazz2);
             } else {
-                category = getCategory(clazz2) + "." + category;
+                String superCategory = getCategory(clazz2);
+                if (!"".equals(superCategory)) {
+                    category = superCategory + "." + category;
+                }
             }
         }
         return category;

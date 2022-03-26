@@ -44,18 +44,18 @@ public class NumberConfigElement<T extends Number> extends PrimitiveConfigElemen
         if (comment != null) {
             s.append(comment);
         }
+        String minString = "-inf";
+        String maxString = "inf";
         if (min != null && min.doubleValue() != Double.MIN_VALUE && min.intValue() != Integer.MIN_VALUE && min.floatValue() != Float.MIN_VALUE) {
-            if (s.length() > 0) {
-                s.append('\n');
-            }
-            s.append(' ').append("Minimum: ").append(min);
+            minString = String.valueOf(min);
         }
         if (max != null && max.doubleValue() != Double.MAX_VALUE && max.intValue() != Integer.MAX_VALUE && max.floatValue() != Float.MAX_VALUE) {
-            if (s.length() > 0) {
-                s.append('\n');
-            }
-            s.append(' ').append("Maximum: ").append(max);
+            maxString = String.valueOf(max);
         }
+        if (s.length() > 0) {
+            s.append("\n");
+        }
+        s.append(String.format(" Range: [%s, %s]", minString, maxString));
         return s.toString();
     }
 

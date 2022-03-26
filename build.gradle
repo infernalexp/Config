@@ -6,8 +6,6 @@ ext.config = parseConfig(file('build.properties'))
 version = config.VERSION
 group = "${config.GROUP}.${config.ARTIFACT}"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
-
 repositories {
     mavenCentral()
 }
@@ -18,8 +16,14 @@ dependencies {
 }
 
 java {
+    toolchain.languageVersion = JavaLanguageVersion.of(16)
     withSourcesJar()
     withJavadocJar()
+}
+
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 publishing {
