@@ -101,6 +101,6 @@ public interface IConfigElement<T> {
      * Tests if the config element's type extends the given class
      */
     default boolean extendsFrom(Class<?> clazz) {
-        return clazz.isAssignableFrom(getType());
+        return getType().isAssignableFrom(clazz);
     }
 }

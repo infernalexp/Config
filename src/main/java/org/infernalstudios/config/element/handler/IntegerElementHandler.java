@@ -71,6 +71,6 @@ public final class IntegerElementHandler implements IConfigElementHandler<Intege
 
     @Override
     public boolean canHandle(Class<?> clazz) {
-        return clazz.equals(Integer.class) || clazz.equals(Integer.TYPE) || clazz.isAssignableFrom(Integer.class) || clazz.isAssignableFrom(Integer.TYPE);
+        return Integer.class.equals(clazz) || Integer.TYPE.equals(clazz) || Integer.class.isAssignableFrom(clazz) || Integer.TYPE.isAssignableFrom(clazz);
     }
 }

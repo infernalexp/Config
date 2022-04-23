@@ -33,6 +33,6 @@ public class PrimitiveConfigElement<T> extends ConfigElement<T> {
 
     @Override
     public boolean extendsFrom(Class<?> clazz) {
-        return clazz.isAssignableFrom(this.primitiveType) || super.extendsFrom(clazz);
+        return this.primitiveType.isAssignableFrom(clazz) || super.extendsFrom(clazz);
     }
 }

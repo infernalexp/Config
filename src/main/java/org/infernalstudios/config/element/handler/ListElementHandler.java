@@ -53,6 +53,6 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
 
     @Override
     public boolean canHandle(Class<?> clazz) {
-        return (clazz.equals(List.class) || clazz.isAssignableFrom(List.class));
+        return (List.class.equals(clazz) || List.class.isAssignableFrom(clazz));
     }
 }

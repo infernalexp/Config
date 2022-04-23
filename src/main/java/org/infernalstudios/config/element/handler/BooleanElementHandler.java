@@ -52,6 +52,6 @@ public final class BooleanElementHandler implements IConfigElementHandler<Boolea
 
     @Override
     public boolean canHandle(Class<?> clazz) {
-        return clazz.equals(Boolean.class) || clazz.equals(Boolean.TYPE) || clazz.isAssignableFrom(Boolean.class) || clazz.isAssignableFrom(Boolean.TYPE);
+        return Boolean.class.equals(clazz) || Boolean.TYPE.equals(clazz) || Boolean.class.isAssignableFrom(clazz) || Boolean.TYPE.isAssignableFrom(clazz);
     }
 }

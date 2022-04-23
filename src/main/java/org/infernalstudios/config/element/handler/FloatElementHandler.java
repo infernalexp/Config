@@ -71,6 +71,6 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
 
     @Override
     public boolean canHandle(Class<?> clazz) {
-        return clazz.equals(Float.class) || clazz.equals(Float.TYPE) || clazz.isAssignableFrom(Float.class) || clazz.isAssignableFrom(Float.TYPE);
+        return Float.class.equals(clazz) || Float.TYPE.equals(clazz) || Float.class.isAssignableFrom(clazz) || Float.TYPE.isAssignableFrom(clazz);
     }
 }

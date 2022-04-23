@@ -15,21 +15,21 @@ public final class Util {
         Objects.requireNonNull(clazz, "clazz must not be null");
         if (clazz.isPrimitive()) {
             return clazz;
-        } else if (clazz.equals(Boolean.class)) {
+        } else if (Boolean.class.equals(clazz)) {
             return Boolean.TYPE;
-        } else if (clazz.equals(Byte.class)) {
+        } else if (Byte.class.equals(clazz)) {
             return Byte.TYPE;
-        } else if (clazz.equals(Character.class)) {
+        } else if (Character.class.equals(clazz)) {
             return Character.TYPE;
-        } else if (clazz.equals(Short.class)) {
+        } else if (Short.class.equals(clazz)) {
             return Short.TYPE;
-        } else if (clazz.equals(Integer.class)) {
+        } else if (Integer.class.equals(clazz)) {
             return Integer.TYPE;
-        } else if (clazz.equals(Long.class)) {
+        } else if (Long.class.equals(clazz)) {
             return Long.TYPE;
-        } else if (clazz.equals(Float.class)) {
+        } else if (Float.class.equals(clazz)) {
             return Float.TYPE;
-        } else if (clazz.equals(Double.class)) {
+        } else if (Double.class.equals(clazz)) {
             return Double.TYPE;
         } else {
             return null;
@@ -42,13 +42,13 @@ public final class Util {
             clazz = getPrimitive(clazz);
         }
         return (
-            clazz.isAssignableFrom(Number.class) ||
-            clazz.equals(Byte.TYPE) ||
-            clazz.equals(Short.TYPE) ||
-            clazz.equals(Integer.TYPE) ||
-            clazz.equals(Long.TYPE) ||
-            clazz.equals(Float.TYPE) ||
-            clazz.equals(Double.TYPE)
+            Number.class.isAssignableFrom(clazz) ||
+            Byte.TYPE.equals(clazz) ||
+            Short.TYPE.equals(clazz) ||
+            Integer.TYPE.equals(clazz) ||
+            Long.TYPE.equals(clazz) ||
+            Float.TYPE.equals(clazz) ||
+            Double.TYPE.equals(clazz)
         );
     }
 

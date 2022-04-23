@@ -71,6 +71,6 @@ public final class DoubleElementHandler implements IConfigElementHandler<Double,
 
     @Override
     public boolean canHandle(Class<?> clazz) {
-        return clazz.equals(Double.class) || clazz.equals(Double.TYPE) || clazz.isAssignableFrom(Double.class) || clazz.isAssignableFrom(Double.TYPE);
+        return Double.class.equals(clazz) || Double.TYPE.equals(clazz) || Double.class.isAssignableFrom(clazz) || Double.TYPE.isAssignableFrom(clazz);
     }
 }
