@@ -160,6 +160,7 @@ public final class ConfigBuilder {
         CommentedFileConfig config = CommentedFileConfig
             .builder(this.path, TomlFormat.instance())
             .concurrent()
+            .sync()
             .build();
 
         File file = this.path.toFile();
