@@ -46,7 +46,7 @@ public final class BooleanElementHandler implements IConfigElementHandler<Boolea
     }
 
     @Override
-    public Boolean deserialize(Boolean obj) {
+    public Boolean deserialize(IConfigElement<Boolean> element, Boolean obj) {
         return obj;
     }
 

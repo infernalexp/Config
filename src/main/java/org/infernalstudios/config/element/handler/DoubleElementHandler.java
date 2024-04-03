@@ -65,7 +65,7 @@ public final class DoubleElementHandler implements IConfigElementHandler<Double,
     }
 
     @Override
-    public Double deserialize(Number obj) {
+    public Double deserialize(IConfigElement<Double> element, Number obj) {
         return obj.doubleValue();
     }
 

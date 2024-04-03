@@ -65,7 +65,7 @@ public final class IntegerElementHandler implements IConfigElementHandler<Intege
     }
 
     @Override
-    public Integer deserialize(Number obj) {
+    public Integer deserialize(IConfigElement<Integer> element, Number obj) {
         return obj.intValue();
     }
 

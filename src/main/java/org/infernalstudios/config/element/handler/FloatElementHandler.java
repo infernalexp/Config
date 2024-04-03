@@ -65,7 +65,7 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
     }
 
     @Override
-    public Float deserialize(Number obj) {
+    public Float deserialize(IConfigElement<Float> element, Number obj) {
         return obj.floatValue();
     }
 

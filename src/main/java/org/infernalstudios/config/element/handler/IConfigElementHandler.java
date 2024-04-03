@@ -45,7 +45,7 @@ public interface IConfigElementHandler<T, S> {
      * @param obj The value to deserialize.
      */
     @Nullable
-    T deserialize(S obj);
+    T deserialize(IConfigElement<T> element, S obj);
 
     /**
      * Determines whether the provided type can be handled by this handler.

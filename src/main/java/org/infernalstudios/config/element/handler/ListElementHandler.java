@@ -16,10 +16,11 @@
 package org.infernalstudios.config.element.handler;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import org.infernalstudios.config.element.ConfigElement;
 import org.infernalstudios.config.element.IConfigElement;
+import org.infernalstudios.config.element.ListConfigElement;
 import org.infernalstudios.config.util.annotation.Nullable;
 
 @SuppressWarnings("rawtypes")
@@ -29,7 +30,7 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
 
     @Override
     public IConfigElement<List> create(Field field) {
-        return new ConfigElement<>(field, this);
+        return new ListConfigElement(field, this);
     }
 
     @Override
@@ -40,14 +41,44 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
         return element;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List serialize(IConfigElement<List> element) {
         List value = element.getFromField();
-        return value == null ? element.getDefault() : value;
+        if (value == null) {
+            value = element.getDefault();
+        }
+
+        if (element instanceof ListConfigElement listConfigElement && listConfigElement.serializeHandler != null) {
+            value = value.stream().map(listElement -> {
+                try {
+                    return listConfigElement.serializeHandler.invoke(null, listElement);
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    throw new IllegalStateException("Could not serialize list", e);
+                }
+            }).toList();
+        }
+
+        return value;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public List deserialize(List obj) {
+    public List deserialize(IConfigElement<List> element, List obj) {
+        if (obj == null) {
+            obj = element.getDefault();
+        }
+
+        if (element instanceof ListConfigElement listConfigElement && listConfigElement.deserializeHandler != null) {
+            obj = obj.stream().map(listElement -> {
+                try {
+                    return listConfigElement.deserializeHandler.invoke(null, listElement);
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    throw new IllegalStateException("Could not deserialize list", e);
+                }
+            }).toList();
+        }
+
         return obj;
     }
 

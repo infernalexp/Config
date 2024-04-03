@@ -45,7 +45,7 @@ public final class StringElementHandler implements IConfigElementHandler<String,
     }
 
     @Override
-    public String deserialize(String obj) {
+    public String deserialize(IConfigElement<String> element, String obj) {
         return obj;
     }
 

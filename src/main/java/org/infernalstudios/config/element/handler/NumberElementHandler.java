@@ -32,7 +32,7 @@ public class NumberElementHandler implements IConfigElementHandler<Number, Numbe
     }
 
     @Override
-    public Number deserialize(Number obj) {
+    public Number deserialize(IConfigElement<Number> element, Number obj) {
         return obj;
     }
 
