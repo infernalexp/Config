@@ -142,6 +142,15 @@ public final class ConfigBuilder {
                 this.loadField(field);
             }
         }
+
+        if (addInherited) {
+            for (Class<?> subClass : clazz.getDeclaredClasses()) {
+                if (Modifier.isStatic(subClass.getModifiers()) && Modifier.isPublic(subClass.getModifiers())) {
+                    this.loadClass(subClass, true);
+                }
+            }
+        }
+        
         return this;
     }
 
