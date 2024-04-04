@@ -17,13 +17,13 @@ package org.infernalstudios.config.element;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import org.infernalstudios.config.annotation.ListValue;
 import org.infernalstudios.config.element.handler.IConfigElementHandler;
 import org.infernalstudios.config.util.annotation.Nullable;
-
-import com.electronwill.nightconfig.core.Config;
 
 @SuppressWarnings("rawtypes")
 public class ListConfigElement extends ConfigElement<List> { 
@@ -60,18 +60,25 @@ public class ListConfigElement extends ConfigElement<List> {
             }
 
             try {
-                this.deserializeHandler = deserializeClass.getDeclaredMethod(deserializeMethod, Config.class);
+                this.deserializeHandler = deserializeClass.getDeclaredMethod(deserializeMethod, Object.class);
             } catch (NoSuchMethodException e) {
                 throw new IllegalStateException("Could not find method for deserialization handler", e);
             } catch (SecurityException e) {
                 throw new IllegalStateException("Could not access method for deserialization handler", e);
             }
             try {
-                this.serializeHandler = serializeClass.getDeclaredMethod(serializeMethod);
+                // This is hacky, but we have no other way
+                ParameterizedType parameterized = (ParameterizedType) field.getGenericType();
+                Type[] typeArgs = parameterized.getActualTypeArguments();
+                String genericTypeName = typeArgs[0].getTypeName();
+                Class<?> genericType = Class.forName(genericTypeName.substring(0, genericTypeName.indexOf("<")));
+                this.serializeHandler = serializeClass.getDeclaredMethod(serializeMethod, genericType);
             } catch (NoSuchMethodException e) {
                 throw new IllegalStateException("Could not find method for serialization handler", e);
             } catch (SecurityException e) {
                 throw new IllegalStateException("Could not access method for serialization handler", e);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalStateException("Could not find class for generic type", e);
             }
         } else {
             this.deserializeHandler = null;

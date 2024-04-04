@@ -29,13 +29,13 @@ import java.lang.annotation.Target;
 public @interface ListValue {
     /**
      * The handler for deserializing the list.
-     * Handler must have a return type of the element in list, must accept a {@link Config} parameter, and must be static.
+     * Handler must have a return type of the element in list, must accept an {@link Object} type, and must be static.
      */
     String deserialize();
     
     /**
      * The handler for serializing the list.
-     * Handler must have a return type of {@link Config}, must accept the element in list as a parameter, and must be static.
+     * Handler must have a return type of any TOML serializable value, must accept the element in list as a parameter, and must be static.
      */
     String serialize();
 }
