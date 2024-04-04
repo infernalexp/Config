@@ -55,4 +55,9 @@ public @interface Configurable {
      * Must be in the format of {@code package.name.ClassName.fieldName}.
      */
     String handler() default "";
+
+    /**
+     * Specifies if the default value of this field should be shown in the config.
+     */
+    boolean showDefault() default true;
 }

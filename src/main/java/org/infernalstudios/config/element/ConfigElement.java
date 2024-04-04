@@ -26,6 +26,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
     private final Field field;
     private final IConfigElementHandler<T, ?> handler;
     private final T defaultValue;
+    private boolean showDefault;
     private String translationKey;
     private String comment;
     private T value;
@@ -37,6 +38,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
         Configurable configurable = field.getAnnotation(Configurable.class);
         String description = configurable.description();
         String translationKey = configurable.translationKey();
+        this.showDefault = configurable.showDefault();
         this.field = field;
         this.handler = handler;
         this.value = null;
@@ -122,7 +124,9 @@ public class ConfigElement<T> implements IConfigElement<T> {
         if (this.comment != null && !this.comment.isEmpty()) {
             s.append(' ').append(this.comment).append('\n');
         }
-        s.append(' ').append("Default: ").append(this.defaultValue.toString());
+        if (this.showDefault) {
+            s.append(' ').append("Default: ").append(this.defaultValue.toString());
+        }
         return s.toString();
     }
 
