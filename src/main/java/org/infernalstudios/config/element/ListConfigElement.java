@@ -71,7 +71,10 @@ public class ListConfigElement extends ConfigElement<List> {
                 ParameterizedType parameterized = (ParameterizedType) field.getGenericType();
                 Type[] typeArgs = parameterized.getActualTypeArguments();
                 String genericTypeName = typeArgs[0].getTypeName();
-                Class<?> genericType = Class.forName(genericTypeName.substring(0, genericTypeName.indexOf("<")));
+                String typeName = genericTypeName.indexOf("<") != -1 ?
+                    genericTypeName.substring(0, genericTypeName.indexOf("<")) :
+                    genericTypeName;
+                Class<?> genericType = Class.forName(typeName);
                 this.serializeHandler = serializeClass.getDeclaredMethod(serializeMethod, genericType);
             } catch (NoSuchMethodException e) {
                 throw new IllegalStateException("Could not find method for serialization handler", e);
