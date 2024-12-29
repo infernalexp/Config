@@ -29,15 +29,9 @@ import java.util.function.Consumer;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.file.FileWatcher;
 
+import org.infernalstudios.config.annotation.AutoSerializable;
 import org.infernalstudios.config.element.IConfigElement;
-import org.infernalstudios.config.element.handler.BooleanElementHandler;
-import org.infernalstudios.config.element.handler.DoubleElementHandler;
-import org.infernalstudios.config.element.handler.FloatElementHandler;
-import org.infernalstudios.config.element.handler.IConfigElementHandler;
-import org.infernalstudios.config.element.handler.IntegerElementHandler;
-import org.infernalstudios.config.element.handler.ListElementHandler;
-import org.infernalstudios.config.element.handler.NumberElementHandler;
-import org.infernalstudios.config.element.handler.StringElementHandler;
+import org.infernalstudios.config.element.handler.*;
 
 public final class Config {
     private final CommentedFileConfig config;
@@ -174,6 +168,12 @@ public final class Config {
     @SuppressWarnings("unchecked")
     public static <T> IConfigElementHandler<T, ?> getHandler(Class<T> clazz) {
         IConfigElementHandler<?, ?> handler = Config.HANDLERS.get(clazz);
+
+        if (handler == null && clazz.isAnnotationPresent(AutoSerializable.class)) {
+            handler = new AutoElementHandler<>(clazz);
+            registerHandler(clazz, (IConfigElementHandler<T, ?>) handler); // Register the handler for future use
+        }
+
         if (handler == null) {
             for (IConfigElementHandler<?, ?> h : Config.HANDLERS.values()) {
                 if (h.canHandle(clazz)) {
@@ -182,6 +182,7 @@ public final class Config {
                 }
             }
         }
+
         return (IConfigElementHandler<T, ?>) handler;
     }
 

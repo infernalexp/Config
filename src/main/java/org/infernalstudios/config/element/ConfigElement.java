@@ -34,7 +34,26 @@ public class ConfigElement<T> implements IConfigElement<T> {
     private String[] tags;
 
     @SuppressWarnings("unchecked")
+    private static <T> T getDefaultValueOrThrow(Field field) {
+        try {
+            return (T) field.get(field.getDeclaringClass());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException(String.format("Field is not static\n\tat: %s",
+                    field.toGenericString()), e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(String.format("Field is not public\n\tat: %s",
+                    field.toGenericString()), e);
+        } catch (ClassCastException e) {
+            throw new IllegalStateException(String.format("Field is not of type \"%s\"\n\tat: %s",
+                    field.getType().getName(), field.toGenericString()), e);
+        }
+    }
+
     public ConfigElement(Field field, IConfigElementHandler<T, ?> handler) {
+        this(field, handler, getDefaultValueOrThrow(field));
+    }
+
+    public ConfigElement(Field field, IConfigElementHandler<T, ?> handler, T defaultValue) {
         Configurable configurable = field.getAnnotation(Configurable.class);
         String description = configurable.description();
         String translationKey = configurable.translationKey();
@@ -49,18 +68,8 @@ public class ConfigElement<T> implements IConfigElement<T> {
         this.translationKey = translationKey.isEmpty() ? field.getName() : translationKey;
         this.category = Util.getCategory(field);
 
-        try {
-            this.defaultValue = (T) this.field.get(field.getDeclaringClass());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalStateException(String.format("Field is not static\n\tat: %s",
-                    field.toGenericString()), e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(String.format("Field is not public\n\tat: %s",
-                    field.toGenericString()), e);
-        } catch (ClassCastException e) {
-            throw new IllegalStateException(String.format("Field is not of type \"%s\"\n\tat: %s",
-                    field.getType().getName(), field.toGenericString()), e);
-        }
+        this.defaultValue = defaultValue;
+
         if (this.defaultValue == null) {
             throw new IllegalStateException(String.format("Default value is null for field \"%s\"\n\tat: %s",
                     this.field.getName(), this.field.toGenericString()));

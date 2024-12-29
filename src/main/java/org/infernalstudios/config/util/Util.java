@@ -1,6 +1,8 @@
 package org.infernalstudios.config.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 import org.infernalstudios.config.annotation.Category;
@@ -9,6 +11,31 @@ import org.infernalstudios.config.util.annotation.Nullable;
 
 public final class Util {
     private Util() {}
+
+    @Nullable
+    public static Class<?> getGenericClass(Field field) throws ClassNotFoundException {
+        try {
+            return getGenericClass(field, 0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    @Nullable
+    public static Class<?> getGenericClass(Field field, int genericIndex) throws ClassNotFoundException, IndexOutOfBoundsException {
+        ParameterizedType parameterized;
+        try {
+            parameterized = (ParameterizedType) field.getGenericType();
+        } catch (ClassCastException e) {
+            throw new ClassNotFoundException("Field type declared without generic type", e);
+        }
+        Type[] typeArgs = parameterized.getActualTypeArguments();
+        String genericTypeName = typeArgs[genericIndex].getTypeName();
+        String typeName = genericTypeName.indexOf("<") != -1 ?
+                genericTypeName.substring(0, genericTypeName.indexOf("<")) :
+                genericTypeName;
+        return Class.forName(typeName);
+    }
 
     @Nullable
     public static Class<?> getPrimitive(Class<?> clazz) {

@@ -18,6 +18,7 @@ package org.infernalstudios.config.element.handler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
 
 import org.infernalstudios.config.element.IConfigElement;
 import org.infernalstudios.config.element.ListConfigElement;
@@ -50,13 +51,7 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
         }
 
         if (element instanceof ListConfigElement listConfigElement && listConfigElement.serializeHandler != null) {
-            value = value.stream().map(listElement -> {
-                try {
-                    return listConfigElement.serializeHandler.invoke(null, listElement);
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    throw new IllegalStateException("Could not serialize list", e);
-                }
-            }).toList();
+            value = value.stream().map(listConfigElement.serializeHandler).filter(Objects::nonNull).toList();
         }
 
         return value;
@@ -70,13 +65,7 @@ public final class ListElementHandler implements IConfigElementHandler<List, Lis
         }
 
         if (element instanceof ListConfigElement listConfigElement && listConfigElement.deserializeHandler != null) {
-            obj = obj.stream().map(listElement -> {
-                try {
-                    return listConfigElement.deserializeHandler.invoke(null, listElement);
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    throw new IllegalStateException("Could not deserialize list", e);
-                }
-            }).toList();
+            obj = obj.stream().map(listConfigElement.deserializeHandler).filter(Objects::nonNull).toList();
         }
 
         return obj;

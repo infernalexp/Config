@@ -21,8 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the field is a {@link java.util.List} field.
+ * Specifies that the field is a {@link java.util.List} field with elements that require special (de)serialization handlers.
  * Must specify `deserialize` and `serialize` handlers.
+ * Incompatible with any possible {@link org.infernalstudios.config.annotation.AutoSerializable AutoSerializable} annotation used for list element class, as this annotation will take precedence.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

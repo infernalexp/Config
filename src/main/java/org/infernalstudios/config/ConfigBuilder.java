@@ -163,7 +163,11 @@ public final class ConfigBuilder {
         List<IConfigElement<?>> elements = new ArrayList<>(this.elements.size());
         for (Pair<Field, IConfigElementHandler<?, ?>> pair : this.elements) {
             pair.getLeft().setAccessible(true);
-            elements.add(pair.getRight().create(pair.getLeft()));
+            try {
+                elements.add(pair.getRight().create(pair.getLeft()));
+            } catch (Throwable e) {
+                throw new RuntimeException(String.format("Could not create config element for field \"%s\"", pair.getLeft().getName()), e);
+            }
         }
 
         CommentedFileConfig config = CommentedFileConfig
