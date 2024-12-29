@@ -26,7 +26,7 @@ import org.infernalstudios.config.util.annotation.Nullable;
  */
 public interface IConfigElement<T> {
     /**
-     * Returns the name of this element. Defaults to the field name + any parent category, and shouldn't be overriden.
+     * Returns the name of this element. Defaults to the field name + any parent category, and shouldn't be overridden.
      */
     default String getName() {
         if (getCategory().isEmpty()) {

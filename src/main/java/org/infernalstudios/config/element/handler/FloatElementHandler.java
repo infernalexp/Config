@@ -53,7 +53,7 @@ public final class FloatElementHandler implements IConfigElementHandler<Float, N
     @Override
     public IConfigElement<Float> update(IConfigElement<Float> element, @Nullable Float value) {
         if (value != null) {
-            element.set(value.floatValue());
+            element.set(value);
         }
         return element;
     }

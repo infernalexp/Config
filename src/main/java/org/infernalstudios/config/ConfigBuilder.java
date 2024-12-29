@@ -40,7 +40,7 @@ public final class ConfigBuilder {
     private final List<Pair<Field, IConfigElementHandler<?, ?>>> elements = new LinkedList<>();
     private final Set<String> loadedElementNames = new HashSet<>();
 
-    protected ConfigBuilder(Path path) throws IOException {
+    ConfigBuilder(Path path) throws IOException {
         this.path = path;
         File file = path.toFile();
         if (file.exists()) {
@@ -66,7 +66,7 @@ public final class ConfigBuilder {
             
             Configurable configurable = field.getAnnotation(Configurable.class);
             IConfigElementHandler<?, ?> handler = null;
-            if (!configurable.handler().equals("")) {
+            if (!configurable.handler().isEmpty()) {
                 try {
                     String fieldPath = configurable.handler();
                     String classPath = fieldPath.substring(0, fieldPath.lastIndexOf('.'));
@@ -74,7 +74,7 @@ public final class ConfigBuilder {
                     Field INSTANCE = Class.forName(classPath).getDeclaredField(fieldName);
                     Class<?> clazz = INSTANCE.getType();
                     Object h = INSTANCE.get(null);
-                    if (IConfigElementHandler.class.isInstance(h)) {
+                    if (h instanceof IConfigElementHandler) {
                         handler = (IConfigElementHandler<?, ?>) h;
                     } else {
                         throw new IllegalStateException(
@@ -157,7 +157,7 @@ public final class ConfigBuilder {
     /**
      * Creates an instance of the config class
      * 
-     * @throws IOException
+     * @throws IOException If the file cannot be created
      */
     public Config build() throws IOException {
         List<IConfigElement<?>> elements = new ArrayList<>(this.elements.size());
@@ -190,16 +190,16 @@ public final class ConfigBuilder {
 
     private static void throwIfInvalidFile(File file) throws IOException {
         if (!file.isFile()) {
-            throw new IOException(String.format("\"%s\" is not a file!", file.getAbsolutePath().toString()));
+            throw new IOException(String.format("\"%s\" is not a file!", file.getAbsolutePath()));
         }
         if (!file.canRead()) {
-            throw new IOException(String.format("File \"%s\" is not readable!", file.getAbsolutePath().toString()));
+            throw new IOException(String.format("File \"%s\" is not readable!", file.getAbsolutePath()));
         }
         if (!file.canWrite()) {
-            throw new IOException(String.format("File \"%s\" is not writable!", file.getAbsolutePath().toString()));
+            throw new IOException(String.format("File \"%s\" is not writable!", file.getAbsolutePath()));
         }
         if (file.isHidden()) {
-            System.out.println(String.format("WARNING: File \"%s\" is hidden", file.getAbsolutePath().toString()));
+            System.out.println(String.format("WARNING: File \"%s\" is hidden", file.getAbsolutePath()));
         }
     }
 }

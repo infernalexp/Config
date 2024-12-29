@@ -53,7 +53,7 @@ public final class DoubleElementHandler implements IConfigElementHandler<Double,
     @Override
     public IConfigElement<Double> update(IConfigElement<Double> element, @Nullable Double value) {
         if (value != null) {
-            element.set(value.doubleValue());
+            element.set(value);
         }
         return element;
     }

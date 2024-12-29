@@ -52,7 +52,7 @@ public class NumberConfigElement<T extends Number> extends PrimitiveConfigElemen
         if (max != null && max.doubleValue() != Double.MAX_VALUE && max.intValue() != Integer.MAX_VALUE && max.floatValue() != Float.MAX_VALUE) {
             maxString = String.valueOf(max);
         }
-        if (s.length() > 0) {
+        if (!s.isEmpty()) {
             s.append("\n");
         }
         s.append(String.format(" Range: [%s, %s]", minString, maxString));

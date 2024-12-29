@@ -17,7 +17,6 @@ package org.infernalstudios.config.element.handler;
 
 import java.lang.reflect.Field;
 
-// import org.infernalstudios.config.annotation.Configurable;
 import org.infernalstudios.config.element.IConfigElement;
 import org.infernalstudios.config.element.PrimitiveConfigElement;
 import org.infernalstudios.config.util.annotation.Nullable;
@@ -34,7 +33,7 @@ public final class BooleanElementHandler implements IConfigElementHandler<Boolea
     @Override
     public IConfigElement<Boolean> update(IConfigElement<Boolean> element, @Nullable Boolean bool) {
         if (bool != null) {
-            element.set(bool.booleanValue());
+            element.set(bool);
         }
         return element;
     }

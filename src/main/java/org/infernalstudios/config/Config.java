@@ -38,7 +38,7 @@ public final class Config {
     private final List<IConfigElement<?>> elements;
     private final List<Consumer<ReloadStage>> reloadListeners = new CopyOnWriteArrayList<>();
 
-    protected Config(CommentedFileConfig config, List<IConfigElement<?>> elements) {
+    Config(CommentedFileConfig config, List<IConfigElement<?>> elements) {
         this.config = config;
         this.elements = new CopyOnWriteArrayList<>(elements);
 
@@ -49,15 +49,10 @@ public final class Config {
         }
 
         try {
-            FileWatcher.defaultInstance().addWatch(config.getNioPath(), new Thread() {
-                @Override
-                public void run() {
-                    Config.this.reload();
-                }
-            });
+            FileWatcher.defaultInstance().addWatch(config.getNioPath(), new Thread(Config.this::reload));
         } catch (IOException e) {
             System.err.println(String.format("Couldn't watch file \"%s\" for changes.",
-                    config.getNioPath().toAbsolutePath().toString()));
+                    config.getNioPath().toAbsolutePath()));
         }
     }
 
@@ -112,7 +107,7 @@ public final class Config {
         }
     }
 
-    public static enum ReloadStage {
+    public enum ReloadStage {
         /**
          * Emitted when {@link Config#reload() reload()} is called.
          */
@@ -159,7 +154,7 @@ public final class Config {
         return new ConfigBuilder(path);
     }
 
-    protected static final Map<Class<?>, IConfigElementHandler<?, ?>> HANDLERS = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, IConfigElementHandler<?, ?>> HANDLERS = new ConcurrentHashMap<>();
 
     public static <T> void registerHandler(Class<T> clazz, IConfigElementHandler<T, ?> handler) {
         Config.HANDLERS.put(clazz, handler);

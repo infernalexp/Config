@@ -30,7 +30,7 @@ public interface IConfigElementHandler<T, S> {
     /**
      * Updates {@code element} with a new value {@code obj}.
      * @param element The element to update.
-     * @param obj The new value deserialized from {@link IConfigElementHandler#deserialize(S) deserialize}. Can be null.
+     * @param obj The new value deserialized from {@link IConfigElementHandler#deserialize(IConfigElement, S) deserialize}. Can be null.
      */
     IConfigElement<T> update(IConfigElement<T> element, @Nullable T obj);
 

@@ -53,7 +53,7 @@ public final class IntegerElementHandler implements IConfigElementHandler<Intege
     @Override
     public IConfigElement<Integer> update(IConfigElement<Integer> element, @Nullable Integer value) {
         if (value != null) {
-            element.set(value.intValue());
+            element.set(value);
         }
         return element;
     }

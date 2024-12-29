@@ -154,7 +154,6 @@ public class ListConfigElement extends ConfigElement<List> {
             return this.value;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public T getFromField() {
             return this.value;

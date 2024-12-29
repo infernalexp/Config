@@ -31,7 +31,7 @@ public final class Util {
         }
         Type[] typeArgs = parameterized.getActualTypeArguments();
         String genericTypeName = typeArgs[genericIndex].getTypeName();
-        String typeName = genericTypeName.indexOf("<") != -1 ?
+        String typeName = genericTypeName.contains("<") ?
                 genericTypeName.substring(0, genericTypeName.indexOf("<")) :
                 genericTypeName;
         return Class.forName(typeName);

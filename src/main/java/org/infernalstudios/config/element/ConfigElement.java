@@ -141,8 +141,8 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
     @Override
     public boolean hasTag(String tag) {
-        for (int i = 0; i < this.tags.length; i++) {
-            if (this.tags[i].equals(tag)) {
+        for (String elementTag : this.tags) {
+            if (elementTag.equals(tag)) {
                 return true;
             }
         }

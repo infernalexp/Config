@@ -16,7 +16,6 @@
 package org.infernalstudios.config.element.handler;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 
